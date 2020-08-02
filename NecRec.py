@@ -64,3 +64,9 @@ plt.axis('off')
 
 for i in range(1,6):
     ax.text(p.iloc[i-1][0]/4, i-1, 'Rating {}: {:.0f} %'.format(i, p.iloc[i-1][0]*100 / p.sum()[0]), color = 'white', weight = 'bold')
+
+
+end = default_timer()
+
+print(end)
+print((end - start)/60)
