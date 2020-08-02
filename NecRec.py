@@ -37,3 +37,30 @@ print(df3.iloc[::5000000, :])
 print('Dataset 4 shape: {}'.format(df4.shape))
 print('-Dataset examples-')
 print(df4.iloc[::5000000, :])"""
+
+#Combinar los 4 datasets
+df = df1
+#df = df1.append(df2)
+"""df = df.append(df3)
+df = df.append(df4)"""
+
+df.index = np.arange(0, len(df))
+print('Full dataset shape: {}'.format(df.shape))
+print('-Dataset examples-')
+print(df.iloc[::5000000,:])
+
+#Veamos primero cómo se propagan los datos:
+p = df.groupby('Rating')['Rating'].agg(['count'])
+#conteo de las peliculas
+movie_count = df.isnull().sum()[1]
+#conteo de los usuarios
+cust_count = df['Cust_Id'].nunique() - movie_count
+#conteo de los ratings
+rating_count = df['Cust_Id'].count() - movie_count
+
+ax = p.plot(kind = 'barh', legend = False, figsize = (15,10))
+plt.title('Total pool: {:,} Movies, {:,} customers, {:,} ratings given'.format(movie_count, cust_count, rating_count), fontsize=20)
+plt.axis('off')
+
+for i in range(1,6):
+    ax.text(p.iloc[i-1][0]/4, i-1, 'Rating {}: {:.0f} %'.format(i, p.iloc[i-1][0]*100 / p.sum()[0]), color = 'white', weight = 'bold')
